@@ -128,6 +128,7 @@ function POIsTranslate (opts, input) {
     var feature = {
       type: 'Feature',
       properties: {
+        id: x,
         name: input.pois[x].name,
         cat: input.pois[x].cat,
         rank: input.pois[x].rank,
@@ -140,10 +141,46 @@ function POIsTranslate (opts, input) {
     }
     items.push(feature)
   }
-  return {
+
+  var response = {
     type: 'FeatureCollection',
-    features: items
+    features: items,
+    metadata: {
+        name: "POIs layer", // Get the workbook name before ! symbol and set as layer name
+        description: 'Restaurants, sights, nightlife and shopping POIs',
+        idField: "id",
+        drawingInfo: require('./symbologyDefinition/pois.js'),
+        fields: [
+            {
+              name: 'id',
+              type: 'Integer',
+              alias: 'ID',
+            },
+            {
+              name: 'name',
+              type: 'String',
+              alias: 'Name',
+            },
+            {
+              name: 'cat',
+              type: 'String',
+              alias: 'Category',
+            },
+            {
+              name: 'rank',
+              type: 'Integer',
+              alias: 'Rank',
+            },
+            {
+              name: 'tags',
+              type: 'String',
+              alias: 'Tags',
+            }
+       ]
+    }
   }
+
+  return response
 }
 
 function TransportStart (req, callback) {
