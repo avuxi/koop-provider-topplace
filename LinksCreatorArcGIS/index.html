@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Koop Provider TopPlace</title>
+    <link href="bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="//js.arcgis.com/4.9/esri/css/main.css">
+
+    <style>
+        p {
+            font-size: 17px;
+        }
+        input {
+            width: 220px;
+            border: 1px solid;
+            border-radius: 5px;
+            height: 25px;
+            border-color: grey;
+        }
+        #map_canvas {
+            width: 600px;
+            height: 400px;
+        }
+        .tdLabel {
+            width: 170px;
+            height: 45px;
+        }
+        .locationScoreData,.hmCategory{
+            display:none;
+        }
+        #geojsonlink {
+            width: 100%;
+            white-space: pre-wrap;
+        }
+    </style>
+    <script>
+        var urlGeojson = 'http://localhost:8088/vx';
+        //var urlGeojson = 'https://geojson.avuxiapis.com/vx';
+    </script>
+    </head>
+<body>
+
+<div class="container-fluid">
+    <div class="row flex-xl-nowrap">
+
+
+
+        <main class="col-sm-12 col-md-12 col-lg-12" style="max-width: 600px;margin: auto;float: none;">
+            <section data-reactroot="" class="swagger-ui swagger-container">
+                <div class="wrapper">
+                    <section class="">
+                        <h1 class="title">
+                            Avuxi for ArcGIS
+                        </h1>
+                        <h2 class="title" id="TopPlaceRestAPI">
+                            Step 1
+                        </h2>
+                        <table>
+                            <tr>
+                                <td class="tdLabel">Select Key</td>
+                                <td>
+
+                                    <input id="key" style="width: 220px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tdLabel">Select type of data</td>
+                                <td>
+                                    <select id="datatype" style="width: 220px;">
+                                        <option value="">-- Select Option --</option>
+                                        <option value="pois">POIs</option>
+                                        <option value="transport">Transport</option>
+                                        <option value="hm">Vectorial Heat Map</option>
+                                        <option value="lsbox">Location Score by Area</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="hmCategory">
+                                <td class="tdLabel">Heat Map Category</td>
+                                <td>
+                                    <select id="hmCategory" style="width: 220px;">
+                                        <optgroup label="Main Categories">
+                                            <option value="vrestaurant">Restaurant</option>
+                                            <option value="phsights">Sights</option>
+                                            <option value="vshopping">Shopping</option>
+                                            <option value="vnightlife">Nightlife</option>
+                                        </optgroup>
+                                        <option value="vnightlife">Nightlife</option>
+                                        <option value="vrestaurant">Restaurant</option>
+                                        <option value="vrestaurantvegetarian">Restaurant / Vegetarian</option>
+                                        <option value="vshopping">Shopping</option>
+                                        <option value="vshoppinglux">Shopping / Luxury</option>
+                                        <option value="phsights">Sights</option>
+                                        <option value="phhistorical">Sights / Historical</option>
+                                        <option value="phbeachpark">Beach & Park</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="locationScoreData">
+                                <td class="tdLabel">Location Score Data</td>
+                                <td>
+                                    <select id="locationScoreData" style="width: 220px;">
+                                        <option value="sights200">Sights in 200 meters</option>
+                                        <option value="sights500">Sights in 500 meters</option>
+                                        <option value="sights1500">Sights in 1500 meters</option>
+                                        <option value="eating200">Restaurant in 200 meters </option>
+                                        <option value="eating500">Restaurant in 500 meters</option>
+                                        <option value="eating1500">Restaurant in 1500 meters</option>
+                                        <option value="eatingvegetarian200">Restaurant / Vegetarian in 200 meters</option>
+                                        <option value="eatingvegetarian500">Restaurant / Vegetarian in 500 meters</option>
+                                        <option value="eatingvegetarian1500">Restaurant / Vegetarian in 1500 meters</option>
+                                        <option value="shopping200">Shopping in 200 meters</option>
+                                        <option value="shopping500">Shopping in 500 meters</option>
+                                        <option value="shopping1500">Shopping in 1500 meters</option>
+                                        <option value="shoppingluxury200">Shopping / Luxury in 200 meters</option>
+                                        <option value="shoppingluxury500">Shopping / Luxury in 500 meters</option>
+                                        <option value="shoppingluxury1500">Shopping / Luxury in 1500 meters</option>
+                                        <option value="nightlife200">Nightlife in 200 meters</option>
+                                        <option value="nightlife500">Nightlife in 500 meters</option>
+                                        <option value="nightlife1500">Nightlife in 1500 meters</option>
+                                        <option value="historical200">Historical in 200 meters</option>
+                                        <option value="historical500">Historical in 500 meters</option>
+                                        <option value="historical1500">Historical in 1500 meters</option>
+                                        <option value="beachpark200">Beach & Park in 200 meters</option>
+                                        <option value="beachpark500">Beach & Park in 500 meters</option>
+                                        <option value="beachpark1500">Beach & Park in 1500 meters</option>
+
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <p> </p>
+                        <p>
+
+                        </p>
+
+
+
+
+                    </section>
+                </div>
+            </section>
+            <section data-reactroot="" class="swagger-ui swagger-container">
+                <div class="wrapper">
+                    <section class="">
+                        <h2 class="title" id="what-is-geopopularity">
+                            Step 2
+                        </h2>
+                        <p>
+                            Select area (moving the map).
+                        </p>
+
+                        <div id="map_canvas"></div>
+
+
+
+                    </section>
+                </div>
+            </section>
+
+            <section data-reactroot="" class="swagger-ui swagger-container">
+                <div class="wrapper">
+                    <section class="">
+                        <h1 class="title">
+                            Step 3
+                        </h1>
+                        <p>
+                            Copy and use the next link.
+                        </p>
+                        <pre id="geojsonlink"></pre>
+                        <a id="geojsonlinksave" href="" target="_blank" download="AVUXIData">Explore in ArcGIS Online</a>
+
+                    </section>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+</div>
+
+
+    <script src="jquery.min.js"></script>
+
+
+    <script src="//js.arcgis.com/4.9/"></script>
+
+
+
+    <script src="index.js"></script>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</body>
+</html>
