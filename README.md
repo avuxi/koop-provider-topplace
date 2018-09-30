@@ -14,8 +14,8 @@ This project use [Koop technology](https://github.com/koopjs)
 1. Request access to the Rest API
 1. Start working with the data
 
-
 ## To Start the project
+
 1. npm install
 1. node server.js
 1. open LinksCreator/index.html
@@ -24,3 +24,6 @@ This project use [Koop technology](https://github.com/koopjs)
 1. move the map
 1. open the url
 
+## Adding symbology support
+
+After `npm install` edit `node_modules/featureserver/src/templates.js` file as described on [this issue](https://github.com/koopjs/FeatureServer/issues/80#issuecomment-425758828)
