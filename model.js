@@ -229,7 +229,8 @@ function TransportTranslate (opts, input) {
       var feature = {
         type: 'Feature',
         properties: {
-          name: input.stops[x][0]
+          name: input.stops[x][0],
+            id: input.stops[x][0]
         },
         geometry: {
           type: 'Point',
@@ -284,6 +285,7 @@ function HMTranslate (opts, input) {
         properties: {
           tile: opts.tile,
           code: 'ply' + levels[x].level + y,
+            id: 'ply' + levels[x].level + y,
           name: levels[x].level
         },
         geometry: {
