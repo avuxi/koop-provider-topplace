@@ -103,11 +103,12 @@ $(document).ready(function () {
 function TypeChange() {
     var type = $("#datatype").val();
     $(".locationScoreData,.hmCategory").hide();
-    if(type == 'hm')
-    $(".hmCategory").show();
-    if(type == 'lsbox')
-    $(".locationScoreData").show();
-
+    if(type == 'hm'){
+        $(".hmCategory").show();
+    }
+    if(type == 'lsbox'){
+        $(".locationScoreData").show();
+    }
     $("#geojsonlink").html('');
 }
 
