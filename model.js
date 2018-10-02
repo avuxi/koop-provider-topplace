@@ -157,6 +157,11 @@ function POIsTranslate (opts, input) {
               alias: 'ID',
             },
             {
+              name: 'OBJECTID',
+              type: 'Integer',
+              alias: 'OBJECTID',
+            },
+            {
               name: 'name',
               type: 'String',
               alias: 'Name',
