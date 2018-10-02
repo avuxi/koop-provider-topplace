@@ -147,21 +147,21 @@ function GenerateLink(){
     var url = '';
     switch(type){
         case 'pois':
-        // key_type/box_limit_language
-        url = urlGeojson +'/'+key+'_pois/'+box.north+','+box.west+','+box.south+','+box.east+'_100_en/FeatureServer';
-        break;
+            // key_type/box_limit_language
+            url = urlGeojson +'/'+key+'_pois/'+box.north+','+box.west+','+box.south+','+box.east+'_100_en/FeatureServer';
+            break;
         case 'transport':
-        // key_type/lat_lon
-        url = urlGeojson +'/'+key+'_transport/'+center[0]+'_'+center[1]+'/FeatureServer';
-        break;
+            // key_type/lat_lon
+            url = urlGeojson +'/'+key+'_transport/'+center[0]+'_'+center[1]+'/FeatureServer';
+            break;
         case 'hm':
-        // key_type/box_category
-        url = urlGeojson +'/'+key+'_hm/'+box.north+','+box.west+','+box.south+','+box.east+'_'+$('#hmCategory').val()+'/FeatureServer';
-        break;
+            // key_type/box_category
+            url = urlGeojson +'/'+key+'_hm/'+box.north+','+box.west+','+box.south+','+box.east+'_'+$('#hmCategory').val()+'/FeatureServer';
+            break;
         case 'lsbox':
-        // key_type/box_category
-        url = urlGeojson +'/'+key+'_lsbox/'+box.north+','+box.west+','+box.south+','+box.east+'_'+$('#locationScoreData').val()+'/FeatureServer';
-        break;
+            // key_type/box_category
+            url = urlGeojson +'/'+key+'_lsbox/'+box.north+','+box.west+','+box.south+','+box.east+'_'+$('#locationScoreData').val()+'/FeatureServer';
+            break;
     }
 
     $("#geojsonlink").html(`${url}/0`);
