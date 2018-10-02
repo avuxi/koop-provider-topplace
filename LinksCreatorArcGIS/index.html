@@ -10,6 +10,9 @@
         p {
             font-size: 17px;
         }
+        #main-container{
+            max-width: 90%; margin: auto;float: none;
+        }
         input {
             width: 220px;
             border: 1px solid;
@@ -18,7 +21,7 @@
             border-color: grey;
         }
         #map_canvas {
-            width: 600px;
+            width: 100%;
             height: 400px;
         }
         .tdLabel {
@@ -31,6 +34,28 @@
         #geojsonlink {
             width: 100%;
             white-space: pre-wrap;
+        }
+        .esri-basemap-gallery__item-container{
+            flex-flow: row wrap;
+        }
+        .esri-basemap-gallery__item{
+            width:33%
+        }
+        .esri-basemap-gallery__item-title{
+            display: none;
+        }
+        .esri-basemap-gallery__item-thumbnail{
+            height: auto;
+            width: 100%;
+        }
+        .esri-basemap-gallery__item:first-child{
+            margin-top: 0;
+        }
+        #tableform{
+            width: 100%;
+        }
+        #tableform td{
+            width: 25%;
         }
     </style>
     <script>
@@ -45,25 +70,20 @@
 
 
 
-        <main class="col-sm-12 col-md-12 col-lg-12" style="max-width: 600px;margin: auto;float: none;">
+        <main id="main-container" class="col-sm-12 col-md-12 col-lg-12">
             <section data-reactroot="" class="swagger-ui swagger-container">
                 <div class="wrapper">
                     <section class="">
                         <h1 class="title">
                             Avuxi for ArcGIS
                         </h1>
-                        <h2 class="title" id="TopPlaceRestAPI">
-                            Step 1
-                        </h2>
-                        <table>
+                        <table id="tableform">
                             <tr>
                                 <td class="tdLabel">Select Key</td>
                                 <td>
 
                                     <input id="key" style="width: 220px;" />
                                 </td>
-                            </tr>
-                            <tr>
                                 <td class="tdLabel">Select type of data</td>
                                 <td>
                                     <select id="datatype" style="width: 220px;">
@@ -143,9 +163,6 @@
             <section data-reactroot="" class="swagger-ui swagger-container">
                 <div class="wrapper">
                     <section class="">
-                        <h2 class="title" id="what-is-geopopularity">
-                            Step 2
-                        </h2>
                         <p>
                             Select area (moving the map).
                         </p>
@@ -161,14 +178,22 @@
             <section data-reactroot="" class="swagger-ui swagger-container">
                 <div class="wrapper">
                     <section class="">
-                        <h1 class="title">
-                            Step 3
-                        </h1>
+                        <h2 class="title">
+                            Explore in ArcGIS
+                        </h2>
                         <p>
-                            Copy and use the next link.
+                            <a id="exploreAgol" href="" target="_blank" download="AVUXIData">View in ArcGIS Online Viewer</a>
+                            |
+                            <a id="geojsonlinksave" href="" target="_blank" download="AVUXIData">Export to GeoJSON</a>
+                            <br>
+                            <a href="https://youtu.be/5FilLSGVo48" style="font-size:1.27rem">Learn how to save a reference to this layer into your ArcGIS account</a>
+                        </p>
+                        <p>
+                            Or copy and use the following link:
                         </p>
                         <pre id="geojsonlink"></pre>
-                        <a id="geojsonlinksave" href="" target="_blank" download="AVUXIData">Explore in ArcGIS Online</a>
+
+
 
                     </section>
                 </div>
