@@ -307,7 +307,13 @@ function HMTranslate (opts, input) {
 
   return {
     type: 'FeatureCollection',
-    features: items
+    features: items,
+    metadata: {
+        name: "Heatmap", // Get the workbook name before ! symbol and set as layer name
+        // description: 'Restaurants, sights, nightlife and shopping POIs',
+        idField: "code",
+        drawingInfo: require('./symbologyDefinition/heatmap_restaurant.js')
+    }
   }
 }
 

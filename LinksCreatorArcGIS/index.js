@@ -27,7 +27,8 @@ function(
 ) {
 
     map = new Map({
-        basemap: "streets-navigation-vector"
+        //basemap: "streets-navigation-vector"
+        basemap: "topo"
     });
 
     view = new MapView({
