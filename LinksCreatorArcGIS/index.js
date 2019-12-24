@@ -3,97 +3,116 @@ require([
     "esri/views/MapView",
     "esri/layers/FeatureLayer",
     "esri/core/watchUtils",
-    "esri/geometry/support/webMercatorUtils"
-  ],
-  function(
+    "esri/geometry/support/webMercatorUtils",
+    "esri/widgets/Search",
+    "esri/widgets/BasemapGallery",
+    "esri/widgets/BasemapGallery/support/LocalBasemapsSource",
+    "esri/core/Collection",
+    "esri/Basemap",
+    "esri/widgets/Expand",
+    "esri/widgets/Legend"
+],
+function(
     Map, MapView,
     FeatureLayer,
     watchUtils,
-    webMercatorUtils
-  ) {
+    webMercatorUtils,
+    Search,
+    BasemapGallery,
+    LocalBasemapsSource,
+    Collection,
+    Basemap,
+    Expand,
+    Legend
+) {
 
     map = new Map({
-      basemap: "gray"
+        //basemap: "streets-navigation-vector"
+        basemap: "topo"
     });
 
     view = new MapView({
-      container: "map_canvas",
-      map: map,
-    center: [2.17014, 41.38605],
-    zoom: 12
-      // extent: { // autocasts as new Extent()
-      //   xmin: -9177811,
-      //   ymin: 4247000,
-      //   xmax: -9176791,
-      //   ymax: 4247784,
-      //   spatialReference: 102100
-      // }
+        container: "map_canvas",
+        map: map,
+        center: [2.17014, 41.38605],
+        zoom: 12
     });
 
-    window.webMercatorUtils=webMercatorUtils
-    window.FeatureLayer=FeatureLayer
+    var searchWidget = new Search({
+        view: view
+    });
+
+    var collection = new Collection([
+        new Basemap({portalItem: {id: "c50de463235e4161b206d000587af18b"}}), // Navigation
+        new Basemap({portalItem: {id: "8d91bd39e873417ea21673e0fee87604"}}), // Nova
+        new Basemap({portalItem: {id: "867895a71a1840399476fc717e76bb43"}}), // Mid-century
+        new Basemap({portalItem: {id: "826498a48bd0424f9c9315214f2165d4"}}), // Colored Pencil Map
+        new Basemap({portalItem: {id: "f35ef07c9ed24020aadd65c8a65d3754"}}), // Modern Antique
+        new Basemap({portalItem: {id: "75a3ce8990674a5ebd5b9ab66bdab893"}}), // Newspaper
+        new Basemap({portalItem: {id: "67372ff42cd145319639a99152b15bc3"}}), // Topo
+        new Basemap({portalItem: {id: "00f90f3f3c9141e4bea329679b257142"}}), // Streets (with Relief)
+        new Basemap({portalItem: {id: "7e2b9be8a9c94e45b7f87857d8d168d6"}}), // Streets (Night)
+        new Basemap({portalItem: {id: "358ec1e175ea41c3bf5c68f0da11ae2b"}}), // Dark Gray Canvas
+        new Basemap({portalItem: {id: "979c6cc89af9449cbeb5342a439c6a76"}}), // Light Gray Canvas
+        new Basemap({portalItem: {id: "a52ab98763904006aa382d90e906fdd5"}}), // Terrain with Labels
+        new Basemap({portalItem: {id: "86265e5a4bbb4187a59719cf134e0018"}}), // Imagery Hybrid
+        new Basemap({portalItem: {id: "b834a68d7a484c5fb473d4ba90d35e71"}}) // OSM
+    ]);
+
+    localBasemapsSource = new LocalBasemapsSource({
+        basemaps: collection
+    })
+
+    var basemapGallery = new BasemapGallery({
+        view: view,
+        container: document.createElement("div"),
+        source:localBasemapsSource
+    });
+
+    var bgExpand = new Expand({
+        view: view,
+        content: basemapGallery
+    });
+
+    view.ui.add(searchWidget, {
+        position: "top-right"
+    });
+    view.ui.add(bgExpand, {
+        position: "top-left"
+    });
+
+    window.webMercatorUtils = webMercatorUtils
+    window.FeatureLayer = FeatureLayer
+    window.Legend = Legend
 
     watchUtils.whenTrue(view, "stationary", function() {
-        // Get the new extent of the view only when view is stationary.
-          if (view.extent) {
-            var info = "<br> <span> the view extent changed: </span>" +
-              "<br> xmin:" + view.extent.xmin.toFixed(2) + " xmax: " +
-              view.extent.xmax.toFixed(2) +
-              "<br> ymin:" + view.extent.ymin.toFixed(2) + " ymax: " +
-              view.extent.ymax.toFixed(2);
-              console.log(info);
-          }
-          GenerateLink();
-        });
+        if (view.extent) {
+            // If the extent has changed
+            GenerateLink();
+        }
+    });
 
-    /********************
-     * Add feature layer
-     ********************/
-
-
-
-
-  });
-
+});
 
 
 $(document).ready(function () {
-    // MapMBStart();
     $("#datatype,#hmCategory,#locationScoreData").change(TypeChange);
     $("input,select").change(GenerateLink);
-
 });
-//
-// var map;
-// var mapboxToken = '';
-// function MapMBStart(){
-//     var options = {};
-//     options.zoom = options.zoom || 12;
-//     options.lat = options.lat || 41.38605;
-//     options.lon = options.lon || 2.17014;
-//
-//     map = new L.map('map_canvas').setView(new L.LatLng(options.lat, options.lon), options.zoom);
-//     var baselayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-//         maxZoom: 18
-//     }).addTo(map);
-//
-//     map.on('moveend', function() {
-//         GenerateLink();
-//     });
-//
-//
-// }
+
+
 function TypeChange() {
     var type = $("#datatype").val();
     $(".locationScoreData,.hmCategory").hide();
-    if(type == 'hm')
+    if(type == 'hm'){
         $(".hmCategory").show();
-    if(type == 'lsbox')
+    }
+    if(type == 'lsbox'){
         $(".locationScoreData").show();
-
+    }
     $("#geojsonlink").html('');
 }
+
 function GenerateLink(){
 
     var key = $("#key").val();
@@ -106,14 +125,14 @@ function GenerateLink(){
         $("#geojsonlink").html('<b>Type of Data</b> is required.');
         return;
     }
-    // debugger
+
     var extent = view.extent.toJSON();
-    var southWest=webMercatorUtils.webMercatorToGeographic({
+    var southWest = webMercatorUtils.webMercatorToGeographic({
         "x" : extent.xmin,
         "y" : extent.ymin,
         "spatialReference" : {"wkid" : extent.spatialReference}
     })
-    var northEast=webMercatorUtils.webMercatorToGeographic({
+    var northEast = webMercatorUtils.webMercatorToGeographic({
         "x" : extent.xmax,
         "y" : extent.ymax,
         "spatialReference" : {"wkid" : extent.spatialReference}
@@ -124,8 +143,6 @@ function GenerateLink(){
         west: southWest.x,
         east: northEast.x
     }
-
-
 
     var center = view.center;
     var url = '';
@@ -149,19 +166,28 @@ function GenerateLink(){
     }
 
     $("#geojsonlink").html(`${url}/0`);
-    $("#geojsonlinksave").attr('href',`//www.arcgis.com/home/webmap/viewer.html?panel=gallery&suggestField=true&url=${url}/0`);
+    $("#exploreAgol").attr('href',`//www.arcgis.com/home/webmap/viewer.html?panel=gallery&suggestField=true&url=${url}/0`);
+    $("#geojsonlinksave").attr('href',`${url}/0/query?f=geojson`);
 
 
     if(typeof(featureLayer)!= "undefined"){
         map.remove(featureLayer);
+        view.ui.remove(legend);
     }
+
     featureLayer = new FeatureLayer({
-      url: url
+        url: url
     });
 
     map.add(featureLayer);
 
+    legend = new Legend({
+        view: view,
+        layerInfos: [{
+            layer: featureLayer,
+            title: "Legend"
+        }]
+    });
+
+    view.ui.add(legend, "bottom-right");
 }
-//
-//
-//
